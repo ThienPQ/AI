@@ -39,3 +39,4 @@ Thumbs.db
 # Ảnh, backup ngoài lề
 *.bak
 *.swp
+".env.local" 

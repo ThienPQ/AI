@@ -1,0 +1,41 @@
+# Thư mục node_modules - KHÔNG BAO GIỜ push lên GitHub
+node_modules/
+
+# Build output Next.js (sinh ra khi chạy build/dev)
+.next/
+out/
+
+# Các file cấu hình môi trường bí mật (API key, database)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Các file log, cache, OS
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# Các thư mục tạm, OCR, temp, xuất ra ngoài
+temp/
+temp_files/
+*.tmp
+*.temp
+
+# VSCode/IDE config
+.vscode/
+.idea/
+.DS_Store
+
+# Mac hệ điều hành
+.DS_Store
+
+# Windows hệ điều hành
+Thumbs.db
+
+# Ảnh, backup ngoài lề
+*.bak
+*.swp

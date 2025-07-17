@@ -85,8 +85,24 @@ export default async function handler(req, res) {
       const response = await openai.chat.completions.create({
         model: "gpt-4",
         messages: [
-          { role: "system", content: "Bạn là trợ lý AI phân tích tài liệu (Excel, Word, PDF) và trả lời các câu hỏi tự do nếu không có tài liệu." },
-          { role: "user", content: prompt },
+          {
+            role: "system",
+            content: [
+              {
+                type: "text",
+                text: "Bạn là trợ lý AI phân tích tài liệu (Excel, Word, PDF) và trả lời các câu hỏi tự do nếu không có tài liệu."
+              }
+            ]
+          },
+          {
+            role: "user",
+            content: [
+              {
+                type: "text",
+                text: prompt
+              }
+            ]
+          }
         ],
         temperature: 0.2,
       });

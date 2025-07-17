@@ -9,7 +9,6 @@ export const config = {
   api: { bodyParser: false }
 };
 
-// Hàm trích xuất text từ file Excel
 function extractTextFromExcel(filepath) {
   const workbook = xlsx.readFile(filepath);
   let text = "";
@@ -21,13 +20,11 @@ function extractTextFromExcel(filepath) {
   return text;
 }
 
-// Hàm trích xuất text từ file PDF
 async function extractTextFromPDF(filepath) {
   const data = await pdfParse(fs.readFileSync(filepath));
   return data.text;
 }
 
-// Hàm trích xuất text từ file Word (docx)
 async function extractTextFromWord(filepath) {
   const result = await mammoth.extractRawText({ path: filepath });
   return result.value;
@@ -45,9 +42,14 @@ export default async function handler(req, res) {
 
       let file = files.file;
       if (Array.isArray(file)) file = file[0];
-      const question = fields.question || "";
 
-      let prompt = question;
+      // Đảm bảo question là string
+      let question = "";
+      if (typeof fields.question === "string") question = fields.question;
+      else if (Array.isArray(fields.question)) question = fields.question.join(" ");
+      else question = "";
+
+      let prompt = question || "";
 
       // Nếu có file (file tồn tại và có tên), thì trích xuất text để hỏi AI
       if (file && (file.originalFilename || file.name || file.filename)) {
@@ -80,6 +82,10 @@ export default async function handler(req, res) {
       if (!process.env.OPENAI_API_KEY) {
         return res.status(500).json({ error: "Thiếu biến môi trường OPENAI_API_KEY" });
       }
+
+      // Đảm bảo prompt là string!
+      if (Array.isArray(prompt)) prompt = prompt.join(" ");
+      if (typeof prompt !== "string") prompt = String(prompt);
 
       const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
       const response = await openai.chat.completions.create({
